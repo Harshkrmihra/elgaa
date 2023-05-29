@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1368" height="307" viewBox="0 0 1368 307">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.868" y1="0.237" x2="0.043" y2="0.762" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#68001e"/>
+      <stop offset="1" stop-color="#d90032"/>
+    </linearGradient>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_185" data-name="Rectangle 185" width="1368" height="307" rx="20" transform="translate(0 -0.296)" fill="url(#linear-gradient)"/>
+    </clipPath>
+  </defs>
+  <g id="Mask_Group_35" data-name="Mask Group 35" transform="translate(0 0.296)" clip-path="url(#clip-path)">
+    <g id="Group_478" data-name="Group 478" transform="translate(0 -735.881)" opacity="0.25">
+      <path id="Path_299" data-name="Path 299" d="M579.909,259.018l496.734,333.463V481.326L579.909,147.864Z" transform="translate(0 74.444)"/>
+      <path id="Path_300" data-name="Path 300" d="M0,0V111.152L496.734,444.615h83.175V333.461H496.734Z" transform="translate(0 0.001)"/>
+      <path id="Path_301" data-name="Path 301" d="M579.909,406.882l496.734,333.463V629.192L579.909,295.729Z" transform="translate(0 148.887)"/>
+      <path id="Path_302" data-name="Path 302" d="M579.909,554.748,1076.643,888.21V777.056L579.909,443.595Z" transform="translate(0 223.33)"/>
+      <path id="Path_303" data-name="Path 303" d="M579.909,702.614l496.734,333.463V924.922L579.909,591.459Z" transform="translate(0 297.773)"/>
+      <path id="Path_304" data-name="Path 304" d="M579.909,850.478l496.734,333.463V1072.787L579.909,739.325Z" transform="translate(0 372.216)"/>
+      <path id="Path_305" data-name="Path 305" d="M579.909,998.343l496.734,333.463V1220.651L579.909,887.19Z" transform="translate(0 446.659)"/>
+      <path id="Path_306" data-name="Path 306" d="M0,259.018,496.734,592.481h83.175V481.326H496.734L0,147.864Z" transform="translate(0 74.444)"/>
+      <path id="Path_307" data-name="Path 307" d="M0,406.882,496.734,740.345h83.175V629.192H496.734L0,295.729Z" transform="translate(0 148.887)"/>
+      <path id="Path_308" data-name="Path 308" d="M0,554.748,496.734,888.21h83.175V777.056H496.734L0,443.595Z" transform="translate(0 223.33)"/>
+      <path id="Path_309" data-name="Path 309" d="M0,702.614l496.734,333.463h83.175V924.922H496.734L0,591.459Z" transform="translate(0 297.773)"/>
+      <path id="Path_310" data-name="Path 310" d="M0,850.478,496.734,1183.94h83.175V1072.787H496.734L0,739.325Z" transform="translate(0 372.216)"/>
+    </g>
+  </g>
+</svg>

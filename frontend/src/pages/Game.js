@@ -1,0 +1,233 @@
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import axios from "axios";
+import { Link, useLocation, useNavigate } from "react-router-dom"; // import useNavigate
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import { Rating } from "react-simple-star-rating";
+import SectionHeading from "../components/General/SectionHeading";
+import RoleCoaches from "../components/RoleCoaches";
+import ChampionCoaches from "../components/ChampionCoaches";
+import ChooseCoach from "../components/ChooseCoach";
+import Banner from "../components/Banner";
+import banner_bg from "../assets/banner_bg.png";
+import AdvancedSearch from "../components/General/AdvancedSearch";
+import HowItWorks from "../components/HowItWorks";
+import PatternBanner from "../components/General/PatternBanner";
+import top_icon from "../assets/league-of-legends/Top.png";
+import jungle_icon from "../assets/league-of-legends/Jungle.png";
+import mid_icon from "../assets/league-of-legends/Mid.png";
+import adc_icon from "../assets/league-of-legends/Bot.png";
+import support_icon from "../assets/league-of-legends/Sup.png";
+import coach_bg from "../assets/BG.png";
+import coach from "../assets/coach.png";
+import aatrox_bg from "../assets/aatrox-bg.png";
+import aatrox_cover from "../assets/league-of-legends/RiotX_ChampionList_aatrox.png";
+import champion_coaches from "../data/champion_coaches";
+import { getGameByFriendlyUrl, getAllCoaches } from "../api";
+import { Helmet } from "react-helmet";
+
+function Game(props) {
+  const [gameData, setGameData] = useState({});
+  const [game_Id, setGameId] = useState("");
+  const [coachesData, setCoachesData] = useState([]); // Add state to store coaches data
+  const location = useLocation();
+  const navigate = useNavigate(); // Initialize navigate
+
+  const fetchGameAndCoachesByFriendlyUrl = async (friendlyUrl) => {
+    // Check if the url starts with @ then navigate to the coach page
+    if (friendlyUrl.startsWith("@")) {
+      navigate(`/@${friendlyUrl.substring(1)}`);
+      return;
+    }
+
+    try {
+      // Fetch game data
+      const gameResponse = await getGameByFriendlyUrl(friendlyUrl);
+      console.log("Game API Response:", gameResponse);
+
+      // If game data is fetched successfully
+      if (gameResponse) {
+        // Update game data state
+        setGameData(gameResponse);
+        setGameId(gameResponse._id);
+        console.log("Props", gameResponse._id);
+        // Fetch coaches data based on the game name
+        const coachesResponse = await getAllCoaches({
+          gameName: gameResponse.gameName,
+        });
+        console.log("Coaches API Response:", coachesResponse);
+
+        // If coaches data is fetched successfully
+        if (coachesResponse) {
+          // Update coaches data state
+          setCoachesData(coachesResponse);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      // Handle error
+    }
+  };
+
+  useEffect(() => {
+    const friendlyUrl = location.pathname.substring(1);
+    fetchGameAndCoachesByFriendlyUrl(friendlyUrl);
+  }, [location]);
+
+  console.log("Game Data:", gameData);
+  console.log("Coaches Data:", coachesData); // Log coaches data
+
+  const {
+    numberOfCoaches,
+    gameType,
+    featuredStarImg,
+    featuredStarQuote,
+    gameId,
+    gameCover,
+    gameName,
+    gameTitle,
+    gameDescription,
+  } = gameData;
+
+  return (
+    <div>
+      <Helmet>
+        <meta name="description" content={gameDescription} />
+        <title>{gameTitle}</title>
+      </Helmet>
+      <div className="w-full  bg-darkgray-600 relative side-paddings py-16">
+        <div className="w-full top-0 rtl:left-0 ltr:right-0">
+          <img
+            src={aatrox_bg}
+            className="w-full h-full max-h-72 lg:max-h-fit select-none object-cover object-right absolute top-0 rtl:left-0 ltr:right-0 rtl:transform rtl:-scale-x-100"
+            draggable={false}
+            alt=""
+          />
+        </div>
+        <div className="relative z-20 ltr:text-left rtl:text-right text-white lg:w-2/3">
+          <div className="flex items-center flex-col lg:flex-row">
+            <h1 className="text-4xl text-center lg:ltr:text-left rtl:text-right lg:text-6xl font-oskari font-medium uppercase">
+              {gameData.gameName}
+            </h1>
+            <div className="flex mt-8 lg:mt-0">
+              <div className="px-6 lg:px-8 uppercase py-1 rtl:lg:mr-4 ltr:lg:ml-4 text-lg  bg-primary-500 rounded-full  font-oskari font-medium">
+                {gameData.gameType}
+              </div>
+              <div className="px-6 lg:px-8 whitespace-nowrap uppercase py-1 rtl:mr-2 rtl:lg:mr-4 ltr:ml-2 ltr:lg:ml-4 text-lg border border-solid border-white rounded-full  font-oskari font-medium">
+                {gameData.numberOfCoaches} Coaches
+              </div>
+            </div>
+          </div>
+          <p className="text-lg hidden lg:block font-oskari mt-6">
+            {gameData.gameDescription}
+          </p>
+          <button className="side-paddings hidden lg:block py-2 bg-primary-500 text-white font-oskari uppercase rounded-xl mt-6 font-medium hover:bg-primary-600 transition-colors">
+            Find your coach now
+          </button>
+        </div>
+      </div>
+      <div className="side-paddings">
+        <AdvancedSearch />
+      </div>
+      <div className="ltr:text-left rtl:text-right mt-8">
+        <SectionHeading
+          title="Top picks for you"
+          link="#"
+          linkTitle="See all"
+        />
+        <div className="w-full h-96 mt-4 ignore-swiper">
+          <Swiper
+            slidesPerView="auto"
+            spaceBetween={20}
+            slidesPerGroupAuto={true}
+            className="mySwiper "
+          >
+            {coachesData?.data?.map((coach, coachIndex) => {
+              var i = 0;
+              // Check if the coach's game matches the gameData's _id
+              if (coach.game === gameData._id) {
+                return (
+                  <SwiperSlide
+                    key={`${coachIndex}`}
+                    className={
+                      (i == 0
+                        ? "ltr:ml-6 ltr:md:ml-8 ltr:xl:ml-12 ltr:2xl:ml-16 rtl:mr-6 rtl:md:mr-8 rtl:xl:mr-12 rtl:2xl:mr-16"
+                        : i == 9
+                        ? "ltr:mr-6 ltr:md:mr-8 ltr:xl:mr-12 ltr:2xl:mr-16 rtl:ml-6 rtl:md:ml-8 rtl:xl:ml-12 rtl:2xl:ml-16 "
+                        : "") + " text-white w-32 h-96"
+                    }
+                  >
+                    <Link to={"/@" + coach.username}>
+                      <div className="w-48 h-96 text-white select-none">
+                        <div className="w-full h-64 relative rounded-lg overflow-hidden">
+                          <img
+                            src={coach_bg}
+                            className="absolute top-0 left-0 w-full h-full"
+                            alt=""
+                          />
+                          <img
+                            src={coach.profilePicture}
+                            className="w-full h-full object-cover relative"
+                            alt=""
+                          />
+                        </div>
+                        <div className="w-full bg-white text-center text-black  rounded-b-lg -mt-2 pt-2 pb-1">
+                          <p className="font-oskari font-medium text-lg">
+                            Starting at ${coach.startingPrice}
+                          </p>
+                        </div>
+                        <p className="font-oskari text-2xl ltr:text-left rtl:text-right font-bold">
+                          {coach.name}
+                        </p>
+                        <p className="font-oskari text-bluegray-300 ltr:text-left rtl:text-right text-base -mt-1">
+                          {coach.gameName} Coach
+                        </p>
+                        <div className="flex items-center -mt-2">
+                          <Rating
+                            ratingValue={100}
+                            iconsCount={5}
+                            fillColor={"#ED0033"}
+                            emptyColor={"#42444D"}
+                            size={20}
+                            readonly={true}
+                          />
+                        </div>
+                      </div>
+                    </Link>
+                  </SwiperSlide>
+                );
+                i++;
+              }
+            })}
+          </Swiper>
+        </div>
+      </div>
+      <div className="mt-16">
+        <PatternBanner />
+        <PatternBanner gameData={gameData} />
+      </div>
+
+      <div className="mt-8">
+        {game_Id ? (
+          <ChooseCoach game_Id={game_Id} showtitle={true} showmore={true} />
+        ) : (
+          ""
+        )}
+      </div>
+      <div className=" ltr:text-left rtl:text-right mt-4">
+        <HowItWorks />
+      </div>
+      <div className="mt-8 side-paddings-except-mobile">
+        <Banner
+          title={"Thousands of users are using \n EL GAMING ACADEMY Everyday!"}
+          bg={banner_bg}
+          button={{ title: "Learn how it works", href: "#" }}
+        />
+      </div>
+    </div>
+  );
+}
+Game.propTypes = {};
+
+export default Game;
